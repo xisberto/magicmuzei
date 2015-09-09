@@ -52,35 +52,9 @@ public class MagicWallpaperService extends RemoteMuzeiArtSource {
             int index = new Random().nextInt(artworks.size());
             Log.w("MuzeiService", String.format("Publishing arwtork #%s", index));
             publishArtwork(artworks.get(index));
-            Calendar updateTime = Calendar.getInstance();
-//            updateTime.set(Calendar.HOUR_OF_DAY, 0);
-            updateTime.set(Calendar.MINUTE, 0);
-            updateTime.set(Calendar.SECOND, 0);
-            updateTime.add(Calendar.HOUR_OF_DAY, 1);
-//            scheduleUpdate(updateTime.getTimeInMillis());
         } catch (Exception e) {
             throw new RetryException();
         }
-/*
-        spiceManager.execute(new WallpaperListRequest(), new RequestListener<ArtworkList>() {
-            @Override
-            public void onRequestFailure(SpiceException spiceException) {
-
-            }
-
-            @Override
-            public void onRequestSuccess(ArtworkList artworks) {
-                Log.w("MuzeiService", "Updating wallpaper");
-                int index = new Random().nextInt(artworks.size());
-                publishArtwork(artworks.get(index));
-                Calendar updateTime = Calendar.getInstance();
-//                updateTime.set(Calendar.HOUR_OF_DAY, 0);
-                updateTime.set(Calendar.MINUTE, 0);
-                updateTime.set(Calendar.SECOND, 0);
-                updateTime.add(Calendar.HOUR_OF_DAY, 1);
-                scheduleUpdate(updateTime.getTimeInMillis());
-            }
-        });*/
     }
 
 }
