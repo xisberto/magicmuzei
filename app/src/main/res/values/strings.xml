@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Magic Wallpapers</string>
+    <string name="description">Weekly wallpapers from magic.wizards.com</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+</resources>
