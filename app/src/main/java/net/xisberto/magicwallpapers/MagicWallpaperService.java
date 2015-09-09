@@ -1,38 +1,26 @@
 package net.xisberto.magicwallpapers;
 
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.support.v4.net.ConnectivityManagerCompat;
 import android.util.Log;
 
+import com.google.android.apps.muzei.api.Artwork;
 import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
-import com.octo.android.robospice.JacksonGoogleHttpClientSpiceService;
-import com.octo.android.robospice.SpiceManager;
 
-import net.xisberto.magicwallpapers.model.ArtworkList;
-import net.xisberto.magicwallpapers.network.WallpaperListRequest;
 import net.xisberto.magicwallpapers.ui.Settings;
 
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class MagicWallpaperService extends RemoteMuzeiArtSource {
-
-    private SpiceManager spiceManager;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        spiceManager = new SpiceManager(JacksonGoogleHttpClientSpiceService.class);
-        spiceManager.start(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.w("MuzeiService", "Destroying service");
-        if (spiceManager.isStarted()) {
-            spiceManager.shouldStop();
-        }
-        super.onDestroy();
-    }
 
     /**
      * Remember to call this constructor from an empty constructor!
@@ -52,19 +40,46 @@ public class MagicWallpaperService extends RemoteMuzeiArtSource {
             }
         }
 
-        WallpaperListRequest request = new WallpaperListRequest();
-        try {
-            ArtworkList artworks = request.loadDataFromNetwork();
-            int index = 0;
-            String most_recent = getResources().getStringArray(R.array.entryvalues_which_show)[0];
-            if (!most_recent.equals(Settings.getInstance(this).whichShow())) {
-                index = new Random().nextInt(artworks.size());
-            }
-            Log.w("MuzeiService", String.format("Publishing arwtork #%s", index));
-            publishArtwork(artworks.get(index));
-        } catch (Exception e) {
+        ArrayList<Artwork> artworks = loadDataFromNetwork();
+        if (artworks.size() == 0) {
             throw new RetryException();
         }
+
+        int index = 0;
+        String most_recent = getResources().getStringArray(R.array.entryvalues_which_show)[0];
+        if (!most_recent.equals(Settings.getInstance(this).whichShow())) {
+            index = new Random().nextInt(artworks.size());
+
+        }
+        Log.w("MuzeiService", String.format("Publishing arwtork #%s", index));
+        publishArtwork(artworks.get(index));
+    }
+
+    private ArrayList<Artwork> loadDataFromNetwork() {
+        ArrayList<Artwork> result = new ArrayList<>();
+        Connection connection = Jsoup.connect("http://magic.wizards.com/en/articles/media/wallpapers");
+        Document document;
+        try {
+            document = connection.get();
+        } catch (IOException e) {
+            return result;
+        }
+        Elements list = document.select("ul.wallpaper-wrap > li > div.wrap");
+        for (Element element : list) {
+            Element title = element.select("h3").first();
+            Element author = element.select("p.author").first();
+            Element uri = element.select("a:contains(Tablet)").first();
+            Artwork artwork = new Artwork.Builder()
+                    .title(title.html())
+                    .byline(author.html())
+                    .imageUri(Uri.parse(uri.attr("href")))
+                    .build();
+            result.add(artwork);
+        }
+
+        Log.w("WallpaperRequest", String.format("Got %s artworks", result.size()));
+
+        return result;
     }
 
 }

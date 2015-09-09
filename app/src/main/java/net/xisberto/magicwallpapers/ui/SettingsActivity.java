@@ -5,29 +5,13 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.octo.android.robospice.JacksonGoogleHttpClientSpiceService;
-import com.octo.android.robospice.SpiceManager;
-import com.octo.android.robospice.persistence.exception.SpiceException;
-import com.octo.android.robospice.request.listener.RequestListener;
-
 import net.xisberto.magicwallpapers.R;
-import net.xisberto.magicwallpapers.model.ArtworkList;
-import net.xisberto.magicwallpapers.network.WallpaperListRequest;
-import net.xisberto.magicwallpapers.ui.WallpaperListAdapter;
 
 public class SettingsActivity extends PreferenceActivity {
 
