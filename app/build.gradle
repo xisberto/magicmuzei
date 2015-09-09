@@ -33,13 +33,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.android.support:recyclerview-v7:23.0.1'
     compile 'com.google.android.apps.muzei:muzei-api:2.0'
-    compile 'com.octo.android.robospice:robospice:1.4.14'
-    compile 'com.octo.android.robospice:robospice-google-http-client:1.4.14'
-    compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
-    compile 'com.google.api-client:google-api-client:1.20.0'
-    compile 'com.google.http-client:google-http-client-jackson:1.20.0'
     compile 'org.jsoup:jsoup:1.8.3'
-    compile 'com.squareup.picasso:picasso:2.5.2'
 }
