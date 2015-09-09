@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="@string/key_wifi_only"
+        android:title="@string/title_wifi_only" />
+
+    <net.xisberto.magicwallpapers.ui.MenuPreference
+        android:defaultValue="most_recent"
+        android:entries="@array/entries_which_show"
+        android:entryValues="@array/entryvalues_which_show"
+        android:key="@string/key_which_show"
+        android:title="@string/title_which_show" />
+</PreferenceScreen>
