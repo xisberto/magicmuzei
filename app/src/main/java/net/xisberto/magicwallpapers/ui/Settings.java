@@ -34,10 +34,12 @@ public class Settings {
         );
     }
 
-    public String whichShow() {
-        return mSharedPreferences.getString(
+    public boolean showMostRecent() {
+        String most_recent = mContext.getResources().getStringArray(R.array.entryvalues_which_show)[0];
+        String which_show = mSharedPreferences.getString(
                 mContext.getString(R.string.key_which_show),
-                mContext.getResources().getStringArray(R.array.entryvalues_which_show)[0]
+                most_recent
         );
+        return which_show.equals(most_recent);
     }
 }

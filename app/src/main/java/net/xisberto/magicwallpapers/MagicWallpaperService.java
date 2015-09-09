@@ -30,6 +30,12 @@ public class MagicWallpaperService extends RemoteMuzeiArtSource {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        setUserCommands(BUILTIN_COMMAND_ID_NEXT_ARTWORK);
+    }
+
+    @Override
     protected void onTryUpdate(int reason) throws RetryException {
         Log.w("MuzeiService", "Trying to update");
 
@@ -46,10 +52,8 @@ public class MagicWallpaperService extends RemoteMuzeiArtSource {
         }
 
         int index = 0;
-        String most_recent = getResources().getStringArray(R.array.entryvalues_which_show)[0];
-        if (!most_recent.equals(Settings.getInstance(this).whichShow())) {
+        if (!Settings.getInstance(this).showMostRecent()) {
             index = new Random().nextInt(artworks.size());
-
         }
         Log.w("MuzeiService", String.format("Publishing arwtork #%s", index));
         publishArtwork(artworks.get(index));
