@@ -1,4 +1,4 @@
-package net.xisberto.magicwallpapers.ui;
+package net.xisberto.magicmuzei.ui;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import net.xisberto.magicwallpapers.R;
+import net.xisberto.magicmuzei.R;
 
 public class SettingsActivity extends PreferenceActivity {
 

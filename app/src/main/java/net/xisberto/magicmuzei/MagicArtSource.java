@@ -1,4 +1,4 @@
-package net.xisberto.magicwallpapers;
+package net.xisberto.magicmuzei;
 
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -9,7 +9,7 @@ import com.google.android.apps.muzei.api.Artwork;
 import com.google.android.apps.muzei.api.RemoteMuzeiArtSource;
 import com.google.gson.Gson;
 
-import net.xisberto.magicwallpapers.ui.Settings;
+import net.xisberto.magicmuzei.ui.Settings;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,12 +24,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MagicWallpaperService extends RemoteMuzeiArtSource {
+public class MagicArtSource extends RemoteMuzeiArtSource {
 
     /**
      * Remember to call this constructor from an empty constructor!
      */
-    public MagicWallpaperService() {
+    public MagicArtSource() {
         super("MagicWallpaperService");
     }
 

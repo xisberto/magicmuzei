@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.0"
 
     defaultConfig {
-        applicationId "net.xisberto.magicwallpapers"
+        applicationId 'net.xisberto.magicmuzei'
         minSdkVersion 17
         targetSdkVersion 23
         versionCode 1

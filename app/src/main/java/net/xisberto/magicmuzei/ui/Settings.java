@@ -1,10 +1,10 @@
-package net.xisberto.magicwallpapers.ui;
+package net.xisberto.magicmuzei.ui;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import net.xisberto.magicwallpapers.R;
+import net.xisberto.magicmuzei.R;
 
 /**
  * Created by xisberto on 09/09/15.

@@ -1,4 +1,4 @@
-package net.xisberto.magicwallpapers.ui;
+package net.xisberto.magicmuzei.ui;
 
 import android.content.Context;
 import android.os.Bundle;

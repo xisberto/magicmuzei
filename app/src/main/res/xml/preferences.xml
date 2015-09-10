@@ -5,7 +5,7 @@
         android:key="@string/key_wifi_only"
         android:title="@string/title_wifi_only" />
 
-    <net.xisberto.magicwallpapers.ui.MenuPreference
+    <net.xisberto.magicmuzei.ui.MenuPreference
         android:defaultValue="most_recent"
         android:entries="@array/entries_which_show"
         android:entryValues="@array/entryvalues_which_show"
