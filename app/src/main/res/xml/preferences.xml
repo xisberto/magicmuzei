@@ -11,4 +11,12 @@
         android:entryValues="@array/entryvalues_which_show"
         android:key="@string/key_which_show"
         android:title="@string/title_which_show" />
+
+    <PreferenceScreen
+        android:title="@string/title_select_wallpapers">
+        <intent
+            android:action="net.xisberto.magicmuzei.SELECT_WALLPAPERS"
+            android:targetClass="net.xisberto.magicmuzei.ui.SelectWallpapersActivity"
+            android:targetPackage="net.xisberto.magicmuzei"/>
+    </PreferenceScreen>
 </PreferenceScreen>
