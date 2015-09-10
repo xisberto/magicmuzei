@@ -22,7 +22,7 @@
             android:description="@string/description"
             android:enabled="true"
             android:exported="true"
-            android:icon="@drawable/ic_wallpaper">
+            android:icon="@drawable/ic_icon">
             <intent-filter>
                 <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource" />
             </intent-filter>
