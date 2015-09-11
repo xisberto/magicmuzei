@@ -1,4 +1,4 @@
-package net.xisberto.magicwallpapers;
+package net.xisberto.magicmuzei;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
