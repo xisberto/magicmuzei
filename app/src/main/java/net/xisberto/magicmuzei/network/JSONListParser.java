@@ -76,20 +76,24 @@ public class JSONListParser {
 
         Request request = new Request.Builder()
                 .url("http://magic.wizards.com/see-more-wallpaper")
-                .header("nextPage", sPage)
+                .header("page", sPage)
                 .build();
 
         Response response = client.newCall(request).execute();
-        String content = response.body().toString();
+        String content = response.body().string();
 
-        return new Gson().fromJson(content, JSONResponse.class);
+        Log.w("JSONListParser", content.substring(0, 20));
+
+        JSONResponse result = new Gson().fromJson(content, JSONResponse.class);
+
+        return result;
     }
 
     public static final class JSONResponse {
         public String data;
-        private int status;
-        private int page;
-        private int displaySeeMore;
+        int status;
+        int page;
+        int displaySeeMore;
 
     }
 }
