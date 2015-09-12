@@ -1,6 +1,7 @@
 package net.xisberto.magicmuzei.ui;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,11 @@ import net.xisberto.magicmuzei.model.ArtworkList;
  */
 public class WallpaperListAdapter extends RecyclerView.Adapter<WallpaperListAdapter.ViewHolder> {
     protected ArtworkList artworks;
+    private SparseBooleanArray selectedItems;
 
     public WallpaperListAdapter(ArtworkList artworks) {
         this.artworks = artworks;
+        selectedItems = new SparseBooleanArray();
     }
 
     @Override
@@ -31,7 +34,7 @@ public class WallpaperListAdapter extends RecyclerView.Adapter<WallpaperListAdap
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         Artwork artwork = artworks.get(position);
         holder.text_preview.setText(artwork.getTitle());
 
@@ -39,6 +42,17 @@ public class WallpaperListAdapter extends RecyclerView.Adapter<WallpaperListAdap
                 .load(artwork.getImageUri())
                 .placeholder(R.drawable.ic_wallpaper_placeholder)
                 .into(holder.image_preview);
+
+        holder.image_preview.setActivated(selectedItems.get(position));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.image_preview.setActivated(
+                        !holder.image_preview.isActivated()
+                );
+            }
+        });
     }
 
     @Override
@@ -57,6 +71,7 @@ public class WallpaperListAdapter extends RecyclerView.Adapter<WallpaperListAdap
 
         public ViewHolder(View itemView) {
             super(itemView);
+            itemView.setClickable(true);
             image_preview = (ImageView) itemView.findViewById(R.id.image_preview);
             text_preview = (TextView) itemView.findViewById(R.id.text_preview);
         }
