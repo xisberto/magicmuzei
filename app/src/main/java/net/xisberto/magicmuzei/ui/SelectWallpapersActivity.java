@@ -34,6 +34,20 @@ public class SelectWallpapersActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         int spacing = getResources().getDimensionPixelSize(R.dimen.grid_spacing);
         recyclerView.addItemDecoration(new SpacesItemDecoration(spacing));
+
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey("artworks")) {
+                ArtworkList artworks = (ArtworkList) savedInstanceState.getSerializable("artworks");
+                adapter = new WallpaperListAdapter(artworks);
+                recyclerView.setAdapter(adapter);
+            }
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("artworks", adapter.artworks);
     }
 
     @Override
@@ -41,22 +55,24 @@ public class SelectWallpapersActivity extends AppCompatActivity {
         super.onStart();
         spiceManager.start(this);
 
-        spiceManager.execute(new WallpaperListRequest(), new RequestListener<ArtworkList>() {
-            @Override
-            public void onRequestSuccess(ArtworkList artworks) {
-                if (adapter == null) {
-                    adapter = new WallpaperListAdapter(artworks);
-                    recyclerView.setAdapter(adapter);
-                } else {
-                    adapter.setArtworks(artworks);
+        if (adapter == null) {
+            spiceManager.execute(new WallpaperListRequest(), new RequestListener<ArtworkList>() {
+                @Override
+                public void onRequestSuccess(ArtworkList artworks) {
+                    if (adapter == null) {
+                        adapter = new WallpaperListAdapter(artworks);
+                        recyclerView.setAdapter(adapter);
+                    } else {
+                        adapter.setArtworks(artworks);
+                    }
                 }
-            }
 
-            @Override
-            public void onRequestFailure(SpiceException spiceException) {
+                @Override
+                public void onRequestFailure(SpiceException spiceException) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     @Override
@@ -78,6 +94,9 @@ public class SelectWallpapersActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                return true;
+            case R.id.action_confirm:
+                //TODO save wallpaperinfos
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

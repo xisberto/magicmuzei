@@ -14,13 +14,13 @@ import net.xisberto.magicmuzei.R;
 import net.xisberto.magicmuzei.model.ArtworkList;
 
 /**
- * Created by xisberto on 11/09/15.
+ * Represents an {@link ArtworkList} into a {@link android.support.v7.widget.RecyclerView.Adapter}.
  */
 public class WallpaperListAdapter extends RecyclerView.Adapter<WallpaperListAdapter.ViewHolder> {
-    private ArtworkList mArtworks;
+    protected ArtworkList artworks;
 
     public WallpaperListAdapter(ArtworkList artworks) {
-        this.mArtworks = artworks;
+        this.artworks = artworks;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class WallpaperListAdapter extends RecyclerView.Adapter<WallpaperListAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Artwork artwork = mArtworks.get(position);
+        Artwork artwork = artworks.get(position);
         holder.text_preview.setText(artwork.getTitle());
 
         Picasso.with(holder.image_preview.getContext())
@@ -43,11 +43,11 @@ public class WallpaperListAdapter extends RecyclerView.Adapter<WallpaperListAdap
 
     @Override
     public int getItemCount() {
-        return mArtworks.size();
+        return artworks.size();
     }
 
     public void setArtworks(ArtworkList mArtworks) {
-        this.mArtworks = mArtworks;
+        this.artworks = mArtworks;
         notifyDataSetChanged();
     }
 
