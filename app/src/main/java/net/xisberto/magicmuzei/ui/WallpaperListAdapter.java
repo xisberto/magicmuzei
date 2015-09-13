@@ -48,8 +48,8 @@ public class WallpaperListAdapter extends RecyclerView.Adapter<WallpaperListAdap
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.image_preview.setActivated(
-                        !holder.image_preview.isActivated()
+                v.setActivated(
+                        !v.isActivated()
                 );
             }
         });
