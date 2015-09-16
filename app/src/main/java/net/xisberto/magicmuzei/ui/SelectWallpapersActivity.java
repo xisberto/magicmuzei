@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -13,8 +15,11 @@ import com.octo.android.robospice.request.listener.RequestListener;
 
 import net.xisberto.magicmuzei.R;
 import net.xisberto.magicmuzei.model.ArtworkList;
+import net.xisberto.magicmuzei.model.WallpaperInfo;
 import net.xisberto.magicmuzei.network.WallpaperListRequest;
 import net.xisberto.magicmuzei.network.WallpaperSpiceService;
+
+import java.util.List;
 
 public class SelectWallpapersActivity extends AppCompatActivity {
     private WallpaperListAdapter adapter;
@@ -39,6 +44,8 @@ public class SelectWallpapersActivity extends AppCompatActivity {
             if (savedInstanceState.containsKey("artworks")) {
                 ArtworkList artworks = (ArtworkList) savedInstanceState.getSerializable("artworks");
                 adapter = new WallpaperListAdapter(artworks);
+                SparseArray<WallpaperInfo> selected_items = savedInstanceState.getSparseParcelableArray("selected_items");
+                adapter.setSelectedItems(selected_items);
                 recyclerView.setAdapter(adapter);
             }
         }
@@ -47,13 +54,16 @@ public class SelectWallpapersActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("artworks", adapter.artworks);
+        outState.putSerializable("artworks", adapter.getArtworks());
+        outState.putSparseParcelableArray("selected_items", adapter.getSelectedItems());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         spiceManager.start(this);
+
+        final List<WallpaperInfo> wallpapers = WallpaperInfo.listAll(WallpaperInfo.class);
 
         if (adapter == null) {
             spiceManager.execute(new WallpaperListRequest(), new RequestListener<ArtworkList>() {
@@ -64,6 +74,18 @@ public class SelectWallpapersActivity extends AppCompatActivity {
                         recyclerView.setAdapter(adapter);
                     } else {
                         adapter.setArtworks(artworks);
+                    }
+                    //Search in saved wallpapers for the wallpapers received from web
+                    //Uses the url to compare, and marks them as selected
+                    for (WallpaperInfo wallpaper : wallpapers) {
+                        Log.w("SelectWallpapers", String.format("Wallpaper index %s", wallpapers.indexOf(wallpaper)));
+                        for (int i = 0; i < artworks.size(); i++) {
+                            Log.w("SelectWallpapers", String.format("Artwork index %s", i));
+                            if (wallpaper.url.equals(artworks.get(i).getImageUri().toString())) {
+                                adapter.setItemSelected(i, true);
+                                i = artworks.size();
+                            }
+                        }
                     }
                 }
 
@@ -96,10 +118,19 @@ public class SelectWallpapersActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_confirm:
-                //TODO save wallpaperinfos
+                saveSelectedWallpapers();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    public void saveSelectedWallpapers() {
+        WallpaperInfo.deleteAll(WallpaperInfo.class);
+        for (int i = 0; i < adapter.getSelectedItems().size(); i++) {
+            int key = adapter.getSelectedItems().keyAt(i);
+            adapter.getSelectedItems().get(key).save();
+        }
+    }
+
 }
