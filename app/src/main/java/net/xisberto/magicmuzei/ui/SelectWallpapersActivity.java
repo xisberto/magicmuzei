@@ -63,8 +63,6 @@ public class SelectWallpapersActivity extends AppCompatActivity {
         super.onStart();
         spiceManager.start(this);
 
-        final List<WallpaperInfo> wallpapers = WallpaperInfo.listAll(WallpaperInfo.class);
-
         if (adapter == null) {
             spiceManager.execute(new WallpaperListRequest(), new RequestListener<ArtworkList>() {
                 @Override
@@ -77,14 +75,24 @@ public class SelectWallpapersActivity extends AppCompatActivity {
                     }
                     //Search in saved wallpapers for the wallpapers received from web
                     //Uses the url to compare, and marks them as selected
+                    List<WallpaperInfo> wallpapers = WallpaperInfo.listAll(WallpaperInfo.class);
                     for (WallpaperInfo wallpaper : wallpapers) {
                         Log.w("SelectWallpapers", String.format("Wallpaper index %s", wallpapers.indexOf(wallpaper)));
-                        for (int i = 0; i < artworks.size(); i++) {
-                            Log.w("SelectWallpapers", String.format("Artwork index %s", i));
-                            if (wallpaper.url.equals(artworks.get(i).getImageUri().toString())) {
-                                adapter.setItemSelected(i, true);
-                                i = artworks.size();
+                        int index;
+                        for (index = 0; index < artworks.size(); index++) {
+                            Log.w("SelectWallpapers", String.format("Artwork index %s", index));
+                            if (wallpaper.url.equals(artworks.get(index).getImageUri().toString())) {
+                                adapter.setItemSelected(index, true);
+                                break;
                             }
+                        }
+                        if (index == artworks.size()
+                                && ! adapter.isItemSelected(index)) {
+                            Log.w("SelectWallpapers", String.format("Adding wallpaper %s", wallpaper.title));
+                            //The artworks loop went until the end and it was not added. This means
+                            //the wallpaper's url matched none of the artworks' urls
+                            artworks.add(wallpaper.toArtwork());
+                            adapter.setItemSelected(index, true);
                         }
                     }
                 }
