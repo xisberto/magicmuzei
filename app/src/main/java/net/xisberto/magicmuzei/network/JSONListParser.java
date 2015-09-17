@@ -75,14 +75,12 @@ public class JSONListParser {
         String sPage = Integer.toString(page);
 
         Request request = new Request.Builder()
-                .url("http://magic.wizards.com/see-more-wallpaper")
-                .header("page", sPage)
+                .url("http://magic.wizards.com/see-more-wallpaper?page=" + sPage)
                 .build();
+        Log.w("JSONList.load", request.urlString());
 
         Response response = client.newCall(request).execute();
         String content = response.body().string();
-
-        Log.w("JSONListParser", content.substring(0, 20));
 
         JSONResponse result = new Gson().fromJson(content, JSONResponse.class);
 

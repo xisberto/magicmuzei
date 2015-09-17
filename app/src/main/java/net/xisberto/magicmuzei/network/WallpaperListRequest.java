@@ -22,6 +22,6 @@ public class WallpaperListRequest extends SpiceRequest<ArtworkList> {
 
     @Override
     public ArtworkList loadDataFromNetwork() throws Exception {
-        return new JSONListParser().getNextPage();
+        return new JSONListParser(page).getNextPage();
     }
 }

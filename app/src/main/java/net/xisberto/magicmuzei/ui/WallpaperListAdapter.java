@@ -67,8 +67,13 @@ public class WallpaperListAdapter extends RecyclerView.Adapter<WallpaperListAdap
         return artworks;
     }
 
-    public void setArtworks(ArtworkList mArtworks) {
-        this.artworks = mArtworks;
+    public void setArtworks(ArtworkList artworks) {
+        this.artworks = artworks;
+        notifyDataSetChanged();
+    }
+
+    public void addArtworks(ArtworkList artworks) {
+        this.artworks.addAll(artworks);
         notifyDataSetChanged();
     }
 
@@ -78,6 +83,10 @@ public class WallpaperListAdapter extends RecyclerView.Adapter<WallpaperListAdap
 
     public void setSelectedItems(SparseArray<WallpaperInfo> selected_items) {
         this.selected_items = selected_items;
+    }
+
+    public void unselectAll() {
+        selected_items.clear();
     }
 
     public void setItemSelected(int position, boolean selected) {

@@ -17,7 +17,7 @@
         <item>most_recent</item>
         <item>random</item>
     </string-array>
-    <string name="title_activity_select_wallpapers">SelectWallpapersActivity</string>
+    <string name="title_activity_select_wallpapers">Wallpaper Selection</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

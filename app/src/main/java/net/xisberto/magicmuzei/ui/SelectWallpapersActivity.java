@@ -25,6 +25,38 @@ public class SelectWallpapersActivity extends AppCompatActivity {
     private WallpaperListAdapter adapter;
     private SpiceManager spiceManager;
     private RecyclerView recyclerView;
+    private RequestListener<ArtworkList> wallpaperListRequestListener = new RequestListener<ArtworkList>() {
+        @Override
+        public void onRequestSuccess(ArtworkList artworks) {
+            if (adapter == null) {
+                adapter = new WallpaperListAdapter(artworks);
+                recyclerView.setAdapter(adapter);
+            } else {
+                adapter.addArtworks(artworks);
+                adapter.unselectAll();
+            }
+            //Search in saved wallpapers for the wallpapers received from web
+            //Uses the url to compare, and marks them as selected
+            List<WallpaperInfo> wallpapers = WallpaperInfo.listAll(WallpaperInfo.class);
+            ArtworkList allArtworks = adapter.getArtworks();
+            for (WallpaperInfo wallpaper : wallpapers) {
+                Log.w("SelectWallpapers", String.format("Wallpaper index %s", wallpapers.indexOf(wallpaper)));
+                int index;
+                for (index = 0; index < allArtworks.size(); index++) {
+                    Log.w("SelectWallpapers", String.format("Artwork index %s", index));
+                    if (wallpaper.url.equals(allArtworks.get(index).getImageUri().toString())) {
+                        adapter.setItemSelected(index, true);
+                        break;
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +68,18 @@ public class SelectWallpapersActivity extends AppCompatActivity {
         spiceManager = new SpiceManager(WallpaperSpiceService.class);
 
         recyclerView = (RecyclerView) findViewById(R.id.list_wallpapers);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
         int spacing = getResources().getDimensionPixelSize(R.dimen.grid_spacing);
         recyclerView.addItemDecoration(new SpacesItemDecoration(spacing));
+        recyclerView.addOnScrollListener(new NextPageOnScrollListener(gridLayoutManager) {
+            @Override
+            public void onLoadMore(int current_page) {
+                Log.w("SelectWallpapers", "Loading page " + current_page);
+                spiceManager.execute(new WallpaperListRequest(current_page),
+                        wallpaperListRequestListener);
+            }
+        });
 
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey("artworks")) {
@@ -64,44 +105,7 @@ public class SelectWallpapersActivity extends AppCompatActivity {
         spiceManager.start(this);
 
         if (adapter == null) {
-            spiceManager.execute(new WallpaperListRequest(), new RequestListener<ArtworkList>() {
-                @Override
-                public void onRequestSuccess(ArtworkList artworks) {
-                    if (adapter == null) {
-                        adapter = new WallpaperListAdapter(artworks);
-                        recyclerView.setAdapter(adapter);
-                    } else {
-                        adapter.setArtworks(artworks);
-                    }
-                    //Search in saved wallpapers for the wallpapers received from web
-                    //Uses the url to compare, and marks them as selected
-                    List<WallpaperInfo> wallpapers = WallpaperInfo.listAll(WallpaperInfo.class);
-                    for (WallpaperInfo wallpaper : wallpapers) {
-                        Log.w("SelectWallpapers", String.format("Wallpaper index %s", wallpapers.indexOf(wallpaper)));
-                        int index;
-                        for (index = 0; index < artworks.size(); index++) {
-                            Log.w("SelectWallpapers", String.format("Artwork index %s", index));
-                            if (wallpaper.url.equals(artworks.get(index).getImageUri().toString())) {
-                                adapter.setItemSelected(index, true);
-                                break;
-                            }
-                        }
-                        if (index == artworks.size()
-                                && ! adapter.isItemSelected(index)) {
-                            Log.w("SelectWallpapers", String.format("Adding wallpaper %s", wallpaper.title));
-                            //The artworks loop went until the end and it was not added. This means
-                            //the wallpaper's url matched none of the artworks' urls
-                            artworks.add(wallpaper.toArtwork());
-                            adapter.setItemSelected(index, true);
-                        }
-                    }
-                }
-
-                @Override
-                public void onRequestFailure(SpiceException spiceException) {
-
-                }
-            });
+            spiceManager.execute(new WallpaperListRequest(), wallpaperListRequestListener);
         }
     }
 
@@ -140,5 +144,4 @@ public class SelectWallpapersActivity extends AppCompatActivity {
             adapter.getSelectedItems().get(key).save();
         }
     }
-
 }
