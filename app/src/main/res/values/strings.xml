@@ -10,7 +10,7 @@
 
     <string-array name="entries_which_show">
         <item>Most recent wallpaper</item>
-        <item>Random from recent wallpapers</item>
+        <item>Random from selected wallpapers</item>
     </string-array>
 
     <string-array name="entryvalues_which_show">
