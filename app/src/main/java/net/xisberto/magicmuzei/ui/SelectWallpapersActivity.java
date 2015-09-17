@@ -8,6 +8,7 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -118,6 +119,12 @@ public class SelectWallpapersActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        Toast.makeText(this, R.string.toast_alterations_discarded, Toast.LENGTH_SHORT).show();
+        super.onBackPressed();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_select_wallpapers, menu);
         return true;
@@ -131,6 +138,7 @@ public class SelectWallpapersActivity extends AppCompatActivity {
                 return true;
             case R.id.action_confirm:
                 saveSelectedWallpapers();
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
