@@ -6,14 +6,22 @@
     <string name="title_wifi_only">Update only on Wifi</string>
     <string name="key_which_show">key_which_show</string>
     <string name="title_which_show">Which wallpaper show</string>
+    <string name="title_select_wallpapers">Select wallpapers to show</string>
 
     <string-array name="entries_which_show">
         <item>Most recent wallpaper</item>
-        <item>Random from recent wallpapers</item>
+        <item>Random from selected wallpapers</item>
     </string-array>
 
     <string-array name="entryvalues_which_show">
         <item>most_recent</item>
         <item>random</item>
     </string-array>
+    <string name="title_activity_select_wallpapers">Wallpaper Selection</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_confirm">Confirm selection</string>
+    <string name="toast_alterations_discarded">Alterations discarded</string>
+    <string name="title_about">About Magic Muzei</string>
 </resources>
