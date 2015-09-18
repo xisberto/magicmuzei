@@ -1,38 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.xisberto.magicmuzei">
+    package="net.xisberto.magicmuzei" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
+        android:name="com.orm.SugarApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
+
+        <meta-data android:name="DATABASE" android:value="magic_muzei.db" />
+        <meta-data android:name="VERSION" android:value="1" />
+        <meta-data android:name="QUERY_LOG" android:value="true" />
+        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="net.xisberto.magicmuzei.model" />
+
         <activity
             android:name=".ui.SettingsActivity"
             android:exported="true"
-            android:label="@string/app_name">
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".ui.SelectWallpapersActivity"
+            android:label="@string/title_activity_select_wallpapers"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="net.xisberto.magicmuzei.SELECT_WALLPAPERS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <service
-            android:name=".MagicArtSource"
+            android:name=".service.MagicArtSource"
             android:description="@string/description"
             android:enabled="true"
             android:exported="true"
-            android:icon="@drawable/ic_icon">
+            android:icon="@drawable/ic_icon" >
             <intent-filter>
                 <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource" />
             </intent-filter>
+
             <meta-data
                 android:name="color"
                 android:value="#be630e" />
-            <meta-data android:name="settingsActivity"
+            <meta-data
+                android:name="settingsActivity"
                 android:value=".ui.SettingsActivity" />
         </service>
-
+        <service
+            android:name=".network.WallpaperSpiceService"
+            android:exported="false" />
     </application>
 
 </manifest>
