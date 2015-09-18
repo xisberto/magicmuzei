@@ -12,17 +12,25 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
-        <meta-data android:name="DATABASE" android:value="magic_muzei.db" />
-        <meta-data android:name="VERSION" android:value="1" />
-        <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="net.xisberto.magicmuzei.model" />
+        <meta-data
+            android:name="DATABASE"
+            android:value="magic_muzei.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="1" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="net.xisberto.magicmuzei.model" />
 
         <activity
             android:name=".ui.SettingsActivity"
             android:exported="true"
             android:label="@string/app_name" >
         </activity>
+
         <activity
             android:name=".ui.SelectWallpapersActivity"
             android:label="@string/title_activity_select_wallpapers"
@@ -34,6 +42,12 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.AboutActivity"
+            android:label="@string/title_about"
+            android:noHistory="true">
+        </activity>
+
         <service
             android:name=".service.MagicArtSource"
             android:description="@string/description"
@@ -43,7 +57,6 @@
             <intent-filter>
                 <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource" />
             </intent-filter>
-
             <meta-data
                 android:name="color"
                 android:value="#be630e" />
@@ -51,6 +64,7 @@
                 android:name="settingsActivity"
                 android:value=".ui.SettingsActivity" />
         </service>
+
         <service
             android:name=".network.WallpaperSpiceService"
             android:exported="false" />

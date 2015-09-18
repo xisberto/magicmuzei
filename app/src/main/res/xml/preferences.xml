@@ -19,4 +19,11 @@
             android:targetClass="net.xisberto.magicmuzei.ui.SelectWallpapersActivity"
             android:targetPackage="net.xisberto.magicmuzei"/>
     </PreferenceScreen>
+
+    <PreferenceScreen
+        android:title="@string/title_about">
+        <intent
+            android:targetClass="net.xisberto.magicmuzei.ui.AboutActivity"
+            android:targetPackage="net.xisberto.magicmuzei"/>
+    </PreferenceScreen>
 </PreferenceScreen>
