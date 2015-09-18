@@ -64,7 +64,9 @@ public class SelectWallpapersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_wallpapers);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         spiceManager = new SpiceManager(WallpaperSpiceService.class);
 
