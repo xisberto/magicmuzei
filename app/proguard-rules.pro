@@ -17,6 +17,7 @@
 #}
 
 -dontobfuscate
+-ignorewarnings
 
 ## Library AboutLibraries ##
 -keep class .R
